@@ -29,8 +29,9 @@ export class UsersService {
     return { code: 200, user: user };
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const users = await this.userModel.find({});
+    return users;
   }
 
   findOne(id: string) {
@@ -46,7 +47,11 @@ export class UsersService {
     return await this.userModel.updateOne({ _id: id }, { ...updateUserDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return "Not found user";
+    }
+
+    return await this.userModel.deleteOne({ _id: id });
   }
 }
