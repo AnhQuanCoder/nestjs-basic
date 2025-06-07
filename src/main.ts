@@ -10,7 +10,7 @@ async function bootstrap() {
 
   // JWT
   const reflector = app.get(Reflector);
-  app.useGlobalGuards(new JwtAuthGuard(reflector));
+  // app.useGlobalGuards(new JwtAuthGuard(reflector));
   // End JWT
 
   app.useGlobalPipes(new ValidationPipe());
