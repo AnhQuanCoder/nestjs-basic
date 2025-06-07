@@ -10,8 +10,16 @@ async function bootstrap() {
 
   // JWT
   const reflector = app.get(Reflector);
-  // app.useGlobalGuards(new JwtAuthGuard(reflector));
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
   // End JWT
+
+  // Config CORS
+  app.enableCors({
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+  });
+  // End Config CORS
 
   app.useGlobalPipes(new ValidationPipe());
   const port = configService.get('PORT');
