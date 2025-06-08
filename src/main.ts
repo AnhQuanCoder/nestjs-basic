@@ -23,7 +23,7 @@ async function bootstrap() {
   // End Config CORS
 
   // Interceptor
-  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalInterceptors(new TransformInterceptor(reflector));
   // End Interceptor
 
   app.useGlobalPipes(new ValidationPipe());

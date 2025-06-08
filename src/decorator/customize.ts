@@ -13,3 +13,9 @@ export const User = createParamDecorator(
     },
 );
 // End @User
+
+// @ResponseMessage: Truyền thông tin message 
+export const RESPONSE_MESSAGE = "response_message";
+export const ResponseMessage = (message: string) =>
+    SetMetadata(RESPONSE_MESSAGE, message);
+// End @ResponseMessage
