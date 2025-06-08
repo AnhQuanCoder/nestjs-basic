@@ -36,8 +36,7 @@ export class CompaniesService {
     const result = await this.companyModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      // @ts-ignore: Unreachable code error
-      .sort(sort)
+      .sort(sort as any)
       .populate(population)
       .exec();
 
