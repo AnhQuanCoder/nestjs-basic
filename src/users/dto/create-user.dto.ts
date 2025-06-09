@@ -12,7 +12,6 @@ class Company {
 
 export class CreateUserDto {
     // Create User phía admin
-
     @IsNotEmpty({ message: "Họ tên không được để trống" })
     name: string;
 
