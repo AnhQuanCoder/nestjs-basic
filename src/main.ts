@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { TransformInterceptor } from './core/transform.interceptor';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,6 +34,10 @@ async function bootstrap() {
     defaultVersion: ["1", "2"]
   });
   // End config versioning
+
+  // Config cookie
+  app.use(cookieParser());
+  // End config cookie
 
   app.useGlobalPipes(new ValidationPipe());
   const port = configService.get('PORT');
