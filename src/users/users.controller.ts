@@ -22,8 +22,8 @@ export class UsersController {
   @Get()
   @ResponseMessage("Fetch users with paginate")
   async findAll(
-    @Query("page") currentPage: string,
-    @Query("limit") limit: string,
+    @Query("current") currentPage: string,
+    @Query("pageSize") limit: string,
     @Query() queryString
   ) {
     const records = await this.usersService.findAll(+currentPage, +limit, queryString);
