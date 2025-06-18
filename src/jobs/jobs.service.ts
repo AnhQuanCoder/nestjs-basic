@@ -14,15 +14,6 @@ export class JobsService {
     @InjectModel(Job.name) private jobModel: SoftDeleteModel<JobDocument>
   ) { }
 
-  isExistJob = async (id: string) => {
-    if (!isValidObjectId(id)) {
-      throw new BadRequestException(`ID không hợp lệ: ${id}`);
-    }
-
-    const result = await this.jobModel.findOne({ _id: id });
-    return result;
-  }
-
   async create(createJobDto: CreateJobDto, user: IUser) {
     const record = await this.jobModel.create({
       ...createJobDto,
@@ -46,9 +37,8 @@ export class JobsService {
   }
 
   async update(id: string, updateJobDto: UpdateJobDto, user: IUser) {
-    const isExist = await this.isExistJob(id);
-    if (!isExist) {
-      throw new BadRequestException(`Không tồn tại job có id: ${id} trong hệ thống!`);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return "Not found user";
     }
 
     const record = await this.jobModel.updateOne({
