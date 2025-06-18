@@ -32,8 +32,17 @@ export class JobsService {
     return `This action returns all jobs`;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} job`;
+  async findOne(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return "Not found user";
+    }
+
+    const record = await this.jobModel.findOne({
+      _id: id,
+      isDeleted: false
+    });
+
+    return record;
   }
 
   async update(id: string, updateJobDto: UpdateJobDto, user: IUser) {
