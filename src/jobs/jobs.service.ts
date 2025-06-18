@@ -5,7 +5,8 @@ import { IUser } from 'src/auth/users.interface';
 import { Job, JobDocument } from './schemas/job.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
-import mongoose, { isValidObjectId } from 'mongoose';
+import mongoose from 'mongoose';
+import aqp from 'api-query-params';
 
 @Injectable()
 export class JobsService {
@@ -28,8 +29,33 @@ export class JobsService {
     };
   }
 
-  findAll() {
-    return `This action returns all jobs`;
+  async findAll(currentPage: number, limit: number, queryString: string) {
+    const { filter, sort, projection, population } = aqp(queryString);
+    delete filter.current;
+    delete filter.pageSize;
+
+    let offset = (+currentPage - 1) * (+limit);
+    let defaultLimit = +limit ? +limit : 10;
+
+    const totalItems = (await this.jobModel.find(filter)).length;
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    const result = await this.jobModel.find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      .sort(sort as any)
+      .populate(population)
+      .exec();
+
+    return {
+      meta: {
+        current: currentPage, //trang hiện tại
+        pageSize: limit, //số lượng bản ghi đã lấy
+        pages: totalPages, //tổng số trang với điều kiện query
+        total: totalItems // tổng số phần tử (số bản ghi)
+      },
+      result //kết quả query
+    }
   }
 
   async findOne(id: string) {
