@@ -17,7 +17,7 @@ export class CreateJobDto {
     @ArrayNotEmpty({ message: 'Skill không được để trống.' })
     @IsString({ each: true, message: 'Mỗi skill phải là một chuỗi.' })
     @IsNotEmpty({ each: true, message: 'Skill không được chứa giá trị rỗng.' })
-    skill: string[];
+    skills: string[];
 
     @IsNotEmptyObject()
     @IsObject()

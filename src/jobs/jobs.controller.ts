@@ -2,14 +2,20 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
+import { ResponseMessage, User } from 'src/decorator/customize';
+import { IUser } from 'src/auth/users.interface';
 
 @Controller('jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) {}
+  constructor(private readonly jobsService: JobsService) { }
 
   @Post()
-  create(@Body() createJobDto: CreateJobDto) {
-    return this.jobsService.create(createJobDto);
+  @ResponseMessage("Create a new job")
+  create(
+    @Body() createJobDto: CreateJobDto,
+    @User() user: IUser
+  ) {
+    return this.jobsService.create(createJobDto, user);
   }
 
   @Get()
